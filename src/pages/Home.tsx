@@ -30,7 +30,7 @@ export default function Home() {
   return (
     <>
       <Banner />
-    
+
       <section className="max-w-6xl mx-auto px-4 py-8">
         {query && (
           <p className="mb-4 text-sm text-ink/70">
@@ -39,10 +39,24 @@ export default function Home() {
           </p>
         )}
 
-        {loading && <p>Loading menu…</p>}
+        {loading && (
+          <div
+            role="status"
+            aria-live="polite"
+            className="flex flex-col items-center justify-center gap-4 py-16"
+          >
+            <div className="h-12 w-12 animate-spin rounded-full border-4 border-sauce/20 border-t-sauce" />
+            <p className="text-lg font-semibold text-sauce animate-pulse">
+              Loading menu…
+            </p>
+            <p className="text-sm text-ink/60">Garma garam khana aa raha hai 🍕</p>
+          </div>
+        )}
+
         {error && (
           <p role="alert" className="text-sauce font-semibold">{error}</p>
         )}
+
         {!loading && !error && filtered.length === 0 && (
           <p className="text-ink/70">
             {query ? `No items match “${query}”.` : "The menu is empty. Check back soon."}
@@ -52,7 +66,6 @@ export default function Home() {
         <div className="grid grid-cols-1 min-[480px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {filtered.map((p) => (
             <ProductCard key={p._id} product={p} onAdd={(p, qty) => addToCart(p, qty)} />
-
           ))}
         </div>
       </section>
