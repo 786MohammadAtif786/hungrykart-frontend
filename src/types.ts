@@ -16,7 +16,7 @@ export interface Product {
   description?: string;
   quantity?: number;
   category?: string;
-  image?: unknown;
+  image?: string;
   isActive?: boolean;
   foodType?: string;
   tags?: string[];

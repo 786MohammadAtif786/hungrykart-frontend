@@ -112,7 +112,8 @@ export default function ProductForm({ product, onClose, onSaved }: Props) {
       fd.append("category", category);
       fd.append("description", description.trim());
       fd.append("foodType", foodType);
-      if (tags) fd.append("tags", tags);
+      // if (tags) fd.append("tags", tags);
+      if (tags) fd.append("tags", Array.isArray(tags) ? tags.join(",") : tags);
       if (file) fd.append("image", file);
       if (product) await api.updateProduct(token, product._id, fd);
       else await api.createProduct(token, fd);

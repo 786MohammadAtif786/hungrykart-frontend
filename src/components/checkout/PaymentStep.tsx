@@ -1,4 +1,4 @@
-import { formatPrice } from "../ProductCard";
+// import { formatPrice } from "../ProductCard";
 import type { PaymentMethod } from "./types";
 
 interface Props {
@@ -15,10 +15,10 @@ const BRANDS = ["UPI", "VISA", "Mastercard", "Amex", "RuPay", "Net Banking"];
 export default function PaymentStep({
   paymentMethod,
   onMethodChange,
-  total,
-  placing,
+  // total,
+  //placing,
   error,
-  onPay,
+ // onPay,
 }: Props) {
   return (
     <div className="mt-4 space-y-3">

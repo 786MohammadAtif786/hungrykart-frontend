@@ -71,7 +71,7 @@ export default function AdminOrders() {
   const [busyId, setBusyId] = useState("");
   const [actionError, setActionError] = useState("");
   const [toast, setToast] = useState("");
-  const toastTimer = useRef<number>();
+  const toastTimer = useRef<number | undefined>(undefined);
   const [detailSnap, setDetailSnap] = useState<Order | null>(null);
   const [rejecting, setRejecting] = useState<{ order: Order; next: OrderStatus; label: string } | null>(null);
   const [reason, setReason] = useState("");

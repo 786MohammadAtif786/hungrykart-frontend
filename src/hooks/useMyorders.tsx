@@ -8,9 +8,9 @@ export function useMyOrders(token: string | null | undefined) {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [freshIds, setFreshIds] = useState<string[]>([]); // highlight ke liye
+  const [freshIds, setFreshIds] = useState<string[]>([]);
   const [toast, setToast] = useState("");
-  const toastTimer = useRef<number>();
+  const toastTimer = useRef<number | undefined>(undefined);
 
   const showToast = useCallback((msg: string) => {
     setToast(msg);

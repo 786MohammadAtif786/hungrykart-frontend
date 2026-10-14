@@ -1,10 +1,11 @@
 import { formatPrice, ProductImage } from "../ProductCard";
 import type { PaymentMethod } from "./types";
+import type { CartItem } from "../../context/CartContext";
 
-interface CartItem {
-  product: { _id: string; name: string; price: number; image?: string };
-  qty: number;
-}
+// interface CartItem {
+//   product: { _id: string; name: string; price: number; image?: string };
+//   qty: number;
+// }
 
 interface Props {
   items: CartItem[];
