@@ -1,0 +1,647 @@
+/* ==========================================================================
+   Admin Orders: responsive (desktop table -> tablet 2-col cards -> mobile cards)
+   Sab styles .ao-page ke andar scoped hain, taaki baaki app se na takraye.
+   ========================================================================== */
+
+.ao-page {
+  --ao-red: #e11d2e;
+  --ao-red-dark: #b91524;
+  --ao-text: #1f1a17;
+  --ao-muted: #7a6f6a;
+  --ao-line: #eadfdb;
+  --ao-soft: #faf5f3;
+  --ao-card: #ffffff;
+  --ao-radius: 14px;
+
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 20px calc(40px + env(safe-area-inset-bottom));
+  color: var(--ao-text);
+  box-sizing: border-box;
+}
+.ao-page *,
+.ao-page *::before,
+.ao-page *::after {
+  box-sizing: border-box;
+}
+
+/* ---------- Status colours (tag, status pill, row accent) ---------- */
+.ao-page .st-PLACED { --c: #e11d2e; --bg: #fee2e2; }
+.ao-page .st-CONFIRMED { --c: #b45309; --bg: #fef3c7; }
+.ao-page .st-PREPARING { --c: #c2410c; --bg: #ffedd5; }
+.ao-page .st-READY { --c: #0e7490; --bg: #cffafe; }
+.ao-page .st-OUT_FOR_DELIVERY { --c: #1d4ed8; --bg: #dbeafe; }
+.ao-page .st-DELIVERED { --c: #15803d; --bg: #dcfce7; }
+.ao-page .st-CANCELLED { --c: #6b7280; --bg: #f3f4f6; }
+
+/* ---------- Header ---------- */
+.ao-header h1 {
+  margin: 0;
+  font-size: clamp(1.35rem, 4.5vw, 1.9rem);
+  line-height: 1.2;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+}
+.ao-header p {
+  margin: 4px 0 0;
+  color: var(--ao-muted);
+  font-size: 0.92rem;
+}
+.ao-conn {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #fef3c7;
+  color: #92400e;
+  white-space: nowrap;
+}
+.ao-conn.connected {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+/* ---------- Toast ---------- */
+.ao-toast {
+  position: fixed;
+  top: 76px;
+  right: 20px;
+  z-index: 60;
+  max-width: min(380px, calc(100vw - 24px));
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: var(--ao-text);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.92rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  animation: ao-toast-in 0.25s ease-out;
+}
+@keyframes ao-toast-in {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- Summary cards ---------- */
+.ao-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin: 18px 0;
+}
+.ao-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 16px;
+  border-radius: var(--ao-radius);
+  background: var(--ao-card);
+  border: 1px solid var(--ao-line);
+  border-left: 5px solid var(--k);
+}
+.ao-stat.red { --k: #e11d2e; }
+.ao-stat.yellow { --k: #f59e0b; }
+.ao-stat.blue { --k: #2563eb; }
+.ao-stat.green { --k: #16a34a; }
+.ao-stat span {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ao-muted);
+}
+.ao-stat b {
+  font-size: 1.8rem;
+  line-height: 1.1;
+  font-weight: 800;
+  color: var(--k);
+}
+.ao-stat small {
+  font-size: 0.74rem;
+  color: var(--ao-muted);
+}
+
+/* ---------- Toolbar ---------- */
+.ao-toolbar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.ao-search {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--ao-line);
+  border-radius: 10px;
+  background: #fff;
+  font-size: 0.95rem;
+  color: var(--ao-text);
+}
+.ao-date {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ao-date input {
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--ao-line);
+  border-radius: 10px;
+  background: #fff;
+  font-size: 0.95rem;
+  color: var(--ao-text);
+}
+.ao-search:focus,
+.ao-date input:focus,
+.ao-modal textarea:focus {
+  outline: 2px solid var(--ao-red);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+.ao-clear,
+.ao-link {
+  background: none;
+  border: 0;
+  padding: 6px;
+  color: var(--ao-red);
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* ---------- Tabs: mobile par side-scroll ---------- */
+.ao-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.ao-tabs::-webkit-scrollbar { display: none; }
+.ao-tabs button {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--ao-line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ao-text);
+  font-size: 0.88rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.ao-tabs button:hover { border-color: var(--ao-red); }
+.ao-tabs button.on {
+  background: var(--ao-red);
+  border-color: var(--ao-red);
+  color: #fff;
+}
+
+/* ---------- Messages ---------- */
+.ao-muted {
+  font-size: 0.82rem;
+  color: var(--ao-muted);
+  margin: 2px 0;
+}
+.ao-error {
+  margin: 0 0 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #fee2e2;
+  color: #991b1b;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.ao-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 48px 16px;
+  text-align: center;
+  border: 2px dashed var(--ao-line);
+  border-radius: var(--ao-radius);
+  color: var(--ao-muted);
+}
+.ao-empty b { color: var(--ao-text); font-size: 1.05rem; }
+
+/* ---------- Table (desktop) ---------- */
+.ao-table {
+  background: var(--ao-card);
+  border: 1px solid var(--ao-line);
+  border-radius: var(--ao-radius);
+  overflow: hidden;
+}
+.ao-thead,
+.ao-row {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr 1.4fr 1fr 1fr 1.1fr;
+  gap: 16px;
+  padding: 16px 18px;
+}
+.ao-thead {
+  background: var(--ao-soft);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ao-muted);
+}
+.ao-row {
+  align-items: start;
+  border-top: 1px solid var(--ao-line);
+  border-left: 4px solid var(--c, transparent);
+  font-size: 0.9rem;
+}
+.ao-row:hover { background: #fffdfc; }
+.ao-cell { min-width: 0; overflow-wrap: anywhere; }
+
+.ao-num {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-weight: 800;
+  font-size: 0.98rem;
+}
+.ao-tag {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--c);
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+.ao-cust { margin-top: 8px; font-weight: 700; }
+.ao-cust small { font-weight: 400; color: var(--ao-muted); font-size: 0.76rem; }
+.ao-item { margin-bottom: 2px; }
+.ao-item span { color: var(--ao-muted); }
+
+.ao-map {
+  display: inline-block;
+  margin-top: 6px;
+  color: var(--ao-red);
+  font-weight: 700;
+  text-decoration: none;
+}
+.ao-map:hover { text-decoration: underline; }
+
+.ao-paid {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+.ao-paid.yes { background: #dcfce7; color: #15803d; }
+.ao-total { margin-top: 6px; font-size: 1.25rem; font-weight: 800; }
+
+.ao-status {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--c);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.ao-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ---------- Buttons ---------- */
+.ao-btn-primary,
+.ao-btn-ghost {
+  min-height: 40px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.05s;
+}
+.ao-btn-primary {
+  border: 1px solid var(--ao-red);
+  background: var(--ao-red);
+  color: #fff;
+}
+.ao-btn-primary:hover:not(:disabled) { background: var(--ao-red-dark); }
+.ao-btn-ghost {
+  border: 1px solid var(--ao-line);
+  background: #fff;
+  color: var(--ao-text);
+}
+.ao-btn-ghost:hover:not(:disabled) { background: var(--ao-soft); }
+.ao-btn-primary:active:not(:disabled),
+.ao-btn-ghost:active:not(:disabled) { transform: scale(0.98); }
+.ao-btn-primary:disabled,
+.ao-btn-ghost:disabled { opacity: 0.55; cursor: not-allowed; }
+.ao-page button:focus-visible,
+.ao-page a:focus-visible {
+  outline: 3px solid var(--ao-red);
+  outline-offset: 2px;
+}
+
+/* ---------- Pager ---------- */
+.ao-pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 18px;
+  font-size: 0.9rem;
+  color: var(--ao-muted);
+}
+.ao-pager button {
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--ao-line);
+  border-radius: 10px;
+  background: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+.ao-pager button:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* ---------- Modal ---------- */
+.ao-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.55);
+  overscroll-behavior: contain;
+  animation: ao-fade 0.18s ease-out;
+}
+.ao-modal {
+  width: 100%;
+  max-width: 720px;
+  max-height: 90vh;
+  max-height: 90dvh;
+  overflow-y: auto;
+  padding: 22px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  animation: ao-pop 0.2s ease-out;
+}
+.ao-modal.small { max-width: 440px; }
+.ao-modal h3 { margin: 0 0 6px; font-size: 1.2rem; font-weight: 800; }
+.ao-modal h4 {
+  margin: 16px 0 6px;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ao-muted);
+}
+.ao-modal textarea {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--ao-line);
+  border-radius: 10px;
+  font: inherit;
+  font-size: 0.95rem;
+  resize: vertical;
+}
+.ao-modal-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.ao-close {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ao-soft);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.ao-grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 24px;
+}
+.ao-items {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.ao-items th,
+.ao-items td {
+  padding: 8px 6px;
+  text-align: left;
+  border-bottom: 1px solid var(--ao-line);
+}
+.ao-items th:nth-child(n + 2),
+.ao-items td:nth-child(n + 2) { text-align: right; white-space: nowrap; }
+.ao-sums {
+  margin: 10px 0 0 auto;
+  max-width: 280px;
+  font-size: 0.92rem;
+}
+.ao-sums > div {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 0;
+}
+.ao-sums .grand {
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px solid var(--ao-line);
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+.ao-cancelnote {
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #fee2e2;
+  color: #991b1b;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.ao-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+@keyframes ao-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes ao-pop {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes ao-sheet {
+  from { transform: translateY(100%); }
+  to { transform: none; }
+}
+
+/* ==========================================================================
+   TABLET (<= 1024px): table header hat jata hai, har order ek 2-column card
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .ao-stats { grid-template-columns: repeat(2, 1fr); }
+
+  .ao-table {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    overflow: visible;
+  }
+  .ao-thead { display: none; }
+
+  .ao-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 20px;
+    margin-bottom: 14px;
+    padding: 16px;
+    background: var(--ao-card);
+    border: 1px solid var(--ao-line);
+    border-left: 5px solid var(--c, var(--ao-line));
+    border-radius: var(--ao-radius);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+  .ao-row:hover { background: var(--ao-card); }
+
+  /* har cell ke upar chhota label (data-label se) */
+  .ao-cell[data-label]:not(:first-child)::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ao-muted);
+  }
+
+  .ao-actions {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-top: 12px;
+    border-top: 1px dashed var(--ao-line);
+  }
+  .ao-actions button { flex: 1 1 140px; }
+}
+
+/* ==========================================================================
+   MOBILE (<= 640px): single column, bade tap targets, bottom-sheet modal
+   ========================================================================== */
+@media (max-width: 640px) {
+  .ao-page { padding: 14px 12px calc(32px + env(safe-area-inset-bottom)); }
+
+  .ao-stats { gap: 10px; margin: 14px 0; }
+  .ao-stat { padding: 12px; }
+  .ao-stat b { font-size: 1.5rem; }
+  .ao-stat small { display: none; }
+
+  .ao-toolbar { flex-direction: column; align-items: stretch; gap: 10px; }
+  .ao-date { width: 100%; }
+  .ao-date input { flex: 1; min-width: 0; }
+  /* iOS par input focus par zoom na ho */
+  .ao-search,
+  .ao-date input,
+  .ao-modal textarea { font-size: 16px; }
+
+  .ao-tabs {
+    margin-inline: -12px;
+    padding-inline: 12px;
+  }
+
+  .ao-toast {
+    top: 68px;
+    left: 12px;
+    right: 12px;
+    max-width: none;
+    text-align: center;
+  }
+
+  .ao-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 14px;
+  }
+  /* label ke saath value ek line me (jaise Payment: ...) */
+  .ao-cell[data-label="Status"] {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+  }
+  .ao-cell[data-label="Status"]::before { flex: 0 0 100%; margin-bottom: 0; }
+  .ao-cell[data-label="Status"] .ao-muted { flex: 0 0 100%; }
+  .ao-total { font-size: 1.15rem; }
+
+  .ao-actions { gap: 10px; }
+  .ao-actions button { min-height: 46px; flex: 1 1 calc(50% - 5px); font-size: 0.92rem; }
+
+  .ao-pager { gap: 10px; }
+  .ao-pager span { order: -1; flex: 0 0 100%; text-align: center; }
+  .ao-pager button { flex: 1; min-height: 44px; }
+
+  /* Modal: neeche se bottom sheet */
+  .ao-overlay { align-items: flex-end; padding: 0; }
+  .ao-modal {
+    max-width: none;
+    max-height: 92vh;
+    max-height: 92dvh;
+    padding: 18px 16px 0;
+    border-radius: 20px 20px 0 0;
+    animation: ao-sheet 0.25s ease-out;
+  }
+  .ao-modal.small { max-width: none; padding-bottom: 16px; }
+  .ao-grid2 { grid-template-columns: 1fr; }
+  .ao-sums { max-width: none; }
+
+  /* Details popup ke buttons hamesha neeche dikhein */
+  .ao-modal:not(.small) .ao-modal-actions {
+    position: sticky;
+    bottom: 0;
+    margin: 16px -16px 0;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    background: #fff;
+    border-top: 1px solid var(--ao-line);
+  }
+  .ao-modal-actions button { flex: 1 1 calc(50% - 5px); min-height: 46px; }
+}
+
+/* ---------- Motion kam karne wale users ke liye ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .ao-page *,
+  .ao-overlay,
+  .ao-modal,
+  .ao-toast {
+    animation: none !important;
+    transition: none !important;
+  }
+}
