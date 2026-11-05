@@ -1,8 +1,11 @@
+
+
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { connectSocket } from "../lib/socket";
 import { deliveryApi, type DeliveryOrder, type StatusPayload } from "../Deliveryapi";
 import { rupees, timeAgo } from "../Ordertypes";
+import VerifyDeliveryModal from "../components/VerifyDeliveryModal"; // <-- OTP
 import "../css/Delivery.css";
 
 type Tab = "new" | "active" | "done";
@@ -16,7 +19,7 @@ const ding = () => {
   try {
     new Audio("/ding.mp3").play().catch(() => {});
   } catch {
-    
+    /* ignore */
   }
 };
 
@@ -36,6 +39,7 @@ export default function DeliveryOrders() {
   const [live, setLive] = useState(false);
   const [busy, setBusy] = useState("");
   const [toast, setToast] = useState("");
+  const [verifyOrder, setVerifyOrder] = useState<DeliveryOrder | null>(null); // <-- OTP screen
 
   const flash = useCallback((msg: string) => {
     setToast(msg);
@@ -63,10 +67,10 @@ export default function DeliveryOrders() {
     const onConnect = () => {
       setLive(true);
       if (first) {
-        first = false; 
+        first = false;
         return;
       }
-      load(); 
+      load();
     };
     const onDisconnect = () => setLive(false);
 
@@ -82,6 +86,7 @@ export default function DeliveryOrders() {
       if (p.status === "CANCELLED") {
         setAvailable((prev) => prev.filter((x) => x._id !== p.orderId));
         setMine((prev) => prev.filter((x) => x._id !== p.orderId));
+        setVerifyOrder((v) => (v && v._id === p.orderId ? null : v)); // OTP screen par order cancel ho jaye
         flash(`Order #${p.orderNumber} cancel ho gaya`);
         return;
       }
@@ -106,7 +111,8 @@ export default function DeliveryOrders() {
     };
   }, [token, load, flash]);
 
-  const act = async (id: string, action: "accept" | "outForDelivery" | "delivered") => {
+  // "delivered" yahan se hata diya: delivered sirf OTP verify se hoga
+  const act = async (id: string, action: "accept" | "outForDelivery") => {
     if (!token || busy) return;
     setBusy(id);
     try {
@@ -119,6 +125,17 @@ export default function DeliveryOrders() {
     } finally {
       setBusy("");
     }
+  };
+
+  // <-- OTP: modal se call hota hai. Galat OTP par error throw hota hai, modal khud dikhata hai.
+  const verifyAndDeliver = async (otp: string) => {
+    if (!token || !verifyOrder) return;
+    await deliveryApi.verifyOtp(token, verifyOrder._id, otp);
+    const num = verifyOrder.orderNumber;
+    setVerifyOrder(null);
+    flash(`Order #${num} delivered ✓`);
+    await load();
+    setTab("done");
   };
 
   const active = mine.filter((o) => o.status === "READY" || o.status === "OUT_FOR_DELIVERY");
@@ -196,14 +213,19 @@ export default function DeliveryOrders() {
                 Picked up, out for delivery
               </button>
             )}
+            {/* <-- OTP: ab seedha delivered nahi, OTP screen khulegi */}
             {tab === "active" && o.status === "OUT_FOR_DELIVERY" && (
-              <button className="ord-btn green" disabled={busy === o._id} onClick={() => act(o._id, "delivered")}>
-                Mark delivered
+              <button className="ord-btn green" onClick={() => setVerifyOrder(o)}>
+                Enter OTP &amp; deliver
               </button>
             )}
           </article>
         );
       })}
+
+      {verifyOrder && (
+        <VerifyDeliveryModal order={verifyOrder} onVerify={verifyAndDeliver} onClose={() => setVerifyOrder(null)} />
+      )}
 
       {toast && <div className="ord-toast">{toast}</div>}
     </div>

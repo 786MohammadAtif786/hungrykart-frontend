@@ -1,0 +1,92 @@
+.offers-wrapper {
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.offers-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.see-all {
+  background: none;
+  border: none;
+  color: #ff4d4d;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* horizontal scroll — yahi magic hai */
+.offers-track {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none; /* Firefox */
+}
+
+.offers-track::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.offer-card {
+  min-width: 340px;
+  scroll-snap-align: start;
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.offer-card:hover {
+  transform: scale(1.02);
+}
+
+.offer-badge {
+  font-size: 12px;
+  letter-spacing: 1px;
+  opacity: 0.9;
+}
+
+.offer-card h3 {
+  font-size: 24px;
+  margin: 4px 0;
+}
+
+.offer-card p {
+  font-size: 13px;
+  margin: 0 0 10px;
+}
+
+.offer-code {
+  background: #fff;
+  color: #333;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.offer-btn {
+  background: #e63b3b;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.offer-img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-left: auto;
+}

@@ -266,3 +266,179 @@
   font-size: 14px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
+
+
+
+
+/* ===== Verify Delivery: ye poora block Delivery.css ke end mein paste karo ===== */
+.vd-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.55);
+}
+.vd-sheet {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 440px;
+  background: #fff;
+  overflow-y: auto;
+}
+.vd-head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 16px 26px;
+  background: #15803d;
+  color: #fff;
+}
+.vd-head h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+}
+.vd-back {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-60%);
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+}
+.vd-body {
+  flex: 1;
+  margin-top: -14px;
+  padding: 18px 20px 28px;
+  background: #fff;
+  border-radius: 18px 18px 0 0;
+}
+.vd-hero {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fff4dd;
+  font-size: 48px;
+}
+.vd-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #f3f4f6;
+  font-size: 14px;
+}
+.vd-info b {
+  font-size: 15px;
+}
+.vd-muted {
+  color: #6b7280;
+}
+.vd-title {
+  margin: 22px 0 2px;
+  font-size: 15px;
+}
+.vd-sub {
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: #6b7280;
+}
+.vd-boxes {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+}
+.vd-box {
+  width: 100%;
+  height: 52px;
+  padding: 0;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  border: 1.5px solid #fca5a5;
+  border-radius: 10px;
+  background: #fff;
+  color: #111827;
+  outline: none;
+}
+.vd-box:focus {
+  border-color: #15803d;
+  box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.15);
+}
+.vd-box.bad {
+  border-color: #dc2626;
+  background: #fff5f5;
+}
+.vd-err {
+  margin: 10px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #dc2626;
+}
+.vd-btn {
+  width: 100%;
+  margin-top: 22px;
+  padding: 15px;
+  border: 0;
+  border-radius: 12px;
+  background: #15803d;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.vd-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.vd-note {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 18px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #eaf3ff;
+}
+.vd-note span {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #2563eb;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}
+.vd-note p {
+  margin: 0;
+  font-size: 13px;
+  color: #374151;
+}
+@media (min-width: 600px) {
+  .vd-overlay {
+    align-items: center;
+  }
+  .vd-sheet {
+    max-height: 92vh;
+    border-radius: 18px;
+  }
+}

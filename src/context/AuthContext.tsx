@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { api, TOKEN_KEY, type RegisterInput } from "../api";
+import { api, TOKEN_KEY, type RegisterInput } from "../api/api";
 import type { User } from "../types";
 
 interface AuthState {

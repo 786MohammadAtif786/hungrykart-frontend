@@ -12,6 +12,7 @@ export const ORDER_STATUSES = [
 export type OrderStatus = (typeof ORDER_STATUSES)[number];
 
 export interface OrderItem {
+  itemId: string; 
   product: string;
   name: string;
   price: number;
@@ -38,6 +39,8 @@ export interface Order {
   cancelledBy?: "ADMIN" | "CUSTOMER";
   createdAt: string;
   updatedAt: string;
+deliveryOtp?: string;       // <-- add karo
+otpExpiresAt?: string; 
 }
 
 export interface StatusPayload {

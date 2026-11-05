@@ -1,0 +1,278 @@
+/* ============ CARD WRAPPER ============ */
+.oc-banner {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  color: #fff;
+  transition: box-shadow 0.25s ease;
+}
+
+.oc-banner:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+/* ============ LEFT CONTENT ============ */
+.oc-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  padding: 16px;
+}
+
+.oc-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: rgba(255, 255, 255, 0.9);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.oc-bigtext {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  white-space: nowrap; /* kabhi line-break nahi */
+}
+
+.oc-subtext {
+  margin: 0;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.oc-title {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* code pill — white button */
+.oc-code {
+  margin-top: 8px;
+  width: fit-content;
+  white-space: nowrap;
+  background: #fff;
+  color: #e63946;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 6px 14px;
+  border-radius: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* ============ ADMIN INFO ============ */
+.oc-admin-info {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.oc-dates {
+  margin: 0;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.oc-usage-track {
+  width: 112px;
+  height: 4px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+}
+
+.oc-usage-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: #fff;
+  transition: width 0.3s ease;
+}
+
+/* ============ RIGHT IMAGE ============ */
+.oc-image-wrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 96px;
+  overflow: hidden;
+}
+
+.oc-image {
+  width: 100%;
+  height: 100%;
+  min-height: 96px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.oc-banner:hover .oc-image {
+  transform: scale(1.05);
+}
+
+/* halka blend — sirf edge smooth kare, image cover na kare */
+.oc-image-fade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ============ ACTION BUTTONS ============ */
+.oc-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.oc-btn {
+  border: none;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: opacity 0.2s, background 0.2s;
+}
+
+.oc-btn:hover {
+  opacity: 0.85;
+}
+
+.oc-btn-active {
+  background: #22c55e;
+  color: #fff;
+}
+
+.oc-btn-inactive {
+  background: rgba(255, 255, 255, 0.3);
+  color: #fff;
+  backdrop-filter: blur(4px);
+}
+
+.oc-btn-edit {
+  background: #fff;
+  color: #333;
+}
+
+.oc-btn-edit:hover {
+  background: #f3f4f6;
+  opacity: 1;
+}
+
+.oc-btn-delete {
+  background: rgba(0, 0, 0, 0.4);
+  color: #fff;
+}
+
+.oc-btn-delete:hover {
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 1;
+}
+
+/* mobile: buttons flow mein, content ke upar overlap nahi */
+.oc-actions-mobile {
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+/* desktop: buttons top-right absolute */
+.oc-actions-desktop {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: none;
+}
+
+/* ============ TABLET (640px+) ============ */
+@media (min-width: 640px) {
+  .oc-content {
+    padding: 24px;
+  }
+
+  .oc-label {
+    font-size: 14px;
+  }
+
+  .oc-bigtext {
+    font-size: 30px;
+  }
+
+  .oc-subtext {
+    font-size: 14px;
+  }
+
+  .oc-title {
+    font-size: 14px;
+  }
+
+  .oc-code {
+    margin-top: 12px;
+    padding: 6px 16px;
+    font-size: 14px;
+  }
+
+  .oc-usage-track {
+    width: 160px;
+  }
+
+  .oc-image-wrap {
+    width: 192px;
+  }
+
+  .oc-image {
+    min-height: 128px;
+  }
+
+  .oc-actions-mobile {
+    display: none;
+  }
+
+  .oc-actions-desktop {
+    display: flex;
+    gap: 8px;
+  }
+
+  .oc-btn {
+    padding: 4px 12px;
+  }
+}
+
+/* ============ DESKTOP (768px+) ============ */
+@media (min-width: 768px) {
+  .oc-image-wrap {
+    width: 256px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .oc-bigtext {
+    font-size: 36px;
+  }
+
+  .oc-image-wrap {
+    width: 288px;
+  }
+}

@@ -227,8 +227,8 @@ export default function AdminOrders() {
       {loading && <p className="ao-muted">Loading orders…</p>}
       {!loading && !error && orders.length === 0 && (
         <div className="ao-empty">
-          <b>Koi order nahi mila</b>
-          <span>{q || date || tab !== "ALL" ? "Filter badal kar dekho" : "Naya order aate hi yahan apne aap dikhega"}</span>
+          <b>No orders found</b>
+          <span>{q || date || tab !== "ALL" ? "Try changing the filter." : "Naya order aate hi yahan apne aap dikhega"}</span>
         </div>
       )}
 

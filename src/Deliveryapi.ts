@@ -1,3 +1,5 @@
+
+
 import { SERVER_URL } from "./lib/socket";
 
 const BASE = SERVER_URL.replace(/\/$/, "");
@@ -41,10 +43,15 @@ export interface StatusPayload {
   cancelReason?: string;
 }
 
-async function call<T>(token: string, path: string, method = "GET"): Promise<T> {
+// body optional: OTP bhejne ke liye JSON body support add kiya
+async function call<T>(token: string, path: string, method = "GET", body?: unknown): Promise<T> {
   const res = await fetch(`${BASE}/api/delivery${path}`, {
     method,
-    headers: { Authorization: `Bearer ${token}` },
+    headers: {
+      Authorization: `Bearer ${token}`,
+      ...(body !== undefined ? { "Content-Type": "application/json" } : {}),
+    },
+    ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
   });
   const json = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(json?.message || `Request failed (${res.status})`);
@@ -56,5 +63,8 @@ export const deliveryApi = {
   mine: (token: string) => call<DeliveryOrder[]>(token, "/mine"),
   accept: (token: string, id: string) => call<DeliveryOrder>(token, `/${id}/accept`, "PATCH"),
   outForDelivery: (token: string, id: string) => call<DeliveryOrder>(token, `/${id}/out-for-delivery`, "PATCH"),
-  delivered: (token: string, id: string) => call<DeliveryOrder>(token, `/${id}/delivered`, "PATCH"),
+
+  // OTP verify hone par hi order DELIVERED hota hai (purana `delivered` method hata diya)
+  verifyOtp: (token: string, id: string, otp: string) =>
+    call<{ message: string }>(token, `/${id}/verify-otp`, "POST", { otp }),
 };

@@ -1,0 +1,91 @@
+/* ✅ White strip banner ke neeche, full width */
+.cat-strip {
+  width: 100%;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+/* ✅ Center content, max width (jaise baaki page) */
+.cat-container {
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* ✅ Horizontal scroll row — mobile pe swipe hoga */
+.cat-row {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 16px 0;
+  scrollbar-width: none; /* Firefox mein scrollbar hide */
+}
+.cat-row::-webkit-scrollbar {
+  display: none; /* Chrome/Safari mein scrollbar hide */
+}
+
+/* ✅ Ek category ka button — icon upar, naam neeche */
+.cat-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0; /* squeeze na ho */
+  padding: 0;
+}
+
+/* ✅ Circular icon */
+.cat-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #f6f6f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  transition: all 0.2s ease;
+}
+
+/* ✅ Hover pe halka red tint */
+.cat-btn:hover .cat-icon {
+  background: #ffe9e9;
+}
+
+/* ✅ Active (selected) category — red highlight */
+.cat-btn-active .cat-icon {
+  background: #e23744;
+  box-shadow: 0 0 0 4px rgba(226, 55, 68, 0.15);
+  transform: scale(1.05);
+}
+
+/* ✅ Category name text */
+.cat-name {
+  font-size: 13px;
+  color: #444444;
+  white-space: nowrap;
+}
+
+/* ✅ Active category ka naam red + bold */
+.cat-btn-active .cat-name {
+  color: #e23744;
+  font-weight: 600;
+}
+
+/* ✅ Responsive — bade screens pe icon thoda bada */
+@media (min-width: 640px) {
+  .cat-row {
+    gap: 20px;
+  }
+  .cat-icon {
+    width: 64px;
+    height: 64px;
+    font-size: 30px;
+  }
+  .cat-name {
+    font-size: 14px;
+  }
+}

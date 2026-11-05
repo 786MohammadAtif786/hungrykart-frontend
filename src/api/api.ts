@@ -1,6 +1,6 @@
 
 
-import type { Product, User } from "./types";
+import type { Product, User } from "../types";
 
 const BASE = (import.meta.env.VITE_API_URL ?? "").replace(/\/$/, "");
 

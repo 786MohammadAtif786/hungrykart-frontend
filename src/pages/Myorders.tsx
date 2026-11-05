@@ -1,8 +1,10 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useMyOrders } from "../hooks/useMyorders";
 import { orderApi } from "../Orderapi";
 import { PROGRESS_STEPS, STATUS_LABEL, isActive, rupees, timeAgo, type Order } from "../Ordertypes";
+import ReviewModal from "../components/ReviewModal";
+import OrderOtp from "../components/Orderotp"; // <-- OTP
 import "../css/Myorders.css";
 
 type Tab = "ALL" | "ACTIVE" | "DELIVERED" | "CANCELLED";
@@ -23,12 +25,34 @@ export default function MyOrders() {
   const [tab, setTab] = useState<Tab>("ALL");
   const [busyId, setBusyId] = useState("");
   const [cancelError, setCancelError] = useState("");
+  const [reviewOrder, setReviewOrder] = useState<Order | null>(null);
 
-  // Customer cancel: only allowed for PLACED / CONFIRMED (the backend checks this too)
+  // orderId -> rating (jin orders ka review ho chuka hai)
+  const [reviewed, setReviewed] = useState<Record<string, number>>({});
+
+  // Page load par pehle se diye gaye reviews fetch karo
+  useEffect(() => {
+    if (!token) return;
+    orderApi
+      .myReviews(token)
+      .then((r) => {
+        const map: Record<string, number> = {};
+        r.reviews.forEach((rv) => {
+          // order populated object ho ya string id, dono handle
+          const id = typeof rv.order === "string" ? rv.order : (rv.order as { _id: string })._id;
+          map[id] = rv.rating;
+        });
+        setReviewed(map);
+      })
+      .catch(() => {
+        /* reviews load na ho to bhi page chalega */
+      });
+  }, [token]);
+
   const cancelOrder = async (o: Order) => {
     if (!token || busyId) return;
     const reason = window.prompt("Reason for cancellation (optional)");
-    if (reason === null) return; // user pressed Cancel
+    if (reason === null) return;
     setBusyId(o._id);
     setCancelError("");
     try {
@@ -41,19 +65,26 @@ export default function MyOrders() {
     }
   };
 
+  // <-- OTP: naya OTP lo, aur order me turant update karo
+  const regenerateOtp = async (o: Order) => {
+    if (!token) return;
+    const updated = await orderApi.regenerateOtp(token, o._id);
+    patchOrder(o._id, { deliveryOtp: updated.deliveryOtp, otpExpiresAt: updated.otpExpiresAt });
+  };
+
   const counts = useMemo(
     () => ({
       ALL: orders.length,
-      ACTIVE: orders.filter((o:any) => isActive(o.status)).length,
-      DELIVERED: orders.filter((o:any) => o.status === "DELIVERED").length,
-      CANCELLED: orders.filter((o:any) => o.status === "CANCELLED").length,
-      PREPARING: orders.filter((o:any) => o.status === "CONFIRMED" || o.status === "PREPARING").length,
-      ON_WAY: orders.filter((o:any) => o.status === "OUT_FOR_DELIVERY").length,
+      ACTIVE: orders.filter((o) => isActive(o.status)).length,
+      DELIVERED: orders.filter((o) => o.status === "DELIVERED").length,
+      CANCELLED: orders.filter((o) => o.status === "CANCELLED").length,
+      PREPARING: orders.filter((o) => o.status === "CONFIRMED" || o.status === "PREPARING").length,
+      ON_WAY: orders.filter((o) => o.status === "OUT_FOR_DELIVERY").length,
     }),
     [orders]
   );
 
-  const visible = orders.filter((o:any) => matches(o, tab));
+  const visible = orders.filter((o) => matches(o, tab));
 
   return (
     <div className="mo-page">
@@ -116,7 +147,7 @@ export default function MyOrders() {
               <div className="mo-body">
                 <div className="mo-col">
                   <h4>Items</h4>
-                  {o.items.map((i:any, idx:any) => (
+                  {o.items.map((i, idx) => (
                     <div key={idx} className="mo-item">
                       <span>
                         {i.name} <em>× {i.quantity}</em>
@@ -161,6 +192,14 @@ export default function MyOrders() {
                 </div>
               )}
 
+              {/* <-- OTP: stepper ke neeche, Cancel button ke upar */}
+              <OrderOtp
+                otp={o.deliveryOtp}
+                expiresAt={o.otpExpiresAt}
+                status={o.status}
+                onRegenerate={() => regenerateOtp(o)}
+              />
+
               {(o.status === "PLACED" || o.status === "CONFIRMED") && (
                 <div className="mo-actions">
                   <button disabled={busyId === o._id} onClick={() => cancelOrder(o)}>
@@ -168,10 +207,38 @@ export default function MyOrders() {
                   </button>
                 </div>
               )}
+
+              {/* Delivered order: already reviewed ho to disabled, warna Rate button */}
+              {o.status === "DELIVERED" && (
+                <div className="mo-actions">
+                  {reviewed[o._id] ? (
+                    <button className="mo-review-btn done" disabled>
+                      ★ Rated {reviewed[o._id]}/5
+                    </button>
+                  ) : (
+                    <button className="mo-review-btn" onClick={() => setReviewOrder(o)}>
+                      ⭐ Rate Order
+                    </button>
+                  )}
+                </div>
+              )}
             </article>
           );
         })}
       </div>
+
+      {reviewOrder && (
+        <ReviewModal
+          orderId={reviewOrder._id}
+          orderNumber={reviewOrder.orderNumber}
+          items={reviewOrder.items}
+          onClose={() => setReviewOrder(null)}
+          onDone={(rating) => {
+            setReviewed((prev) => ({ ...prev, [reviewOrder._id]: rating }));
+            setReviewOrder(null);
+          }}
+        />
+      )}
     </div>
   );
 }

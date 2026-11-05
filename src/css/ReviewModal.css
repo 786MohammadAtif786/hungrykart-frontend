@@ -1,0 +1,76 @@
+.rv-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.5);
+  display: flex; align-items: center; justify-content: center; z-index: 1000;
+}
+.rv-modal {
+  background: #fff; border-radius: 14px; padding: 24px;
+  width: min(420px, 92vw);
+}
+.rv-modal h3 { margin: 0 0 16px; }
+
+/* ⭐ RED STARS */
+.rv-stars { display: flex; align-items: center; gap: 4px; margin-bottom: 14px; }
+.rv-star {
+  font-size: 34px; line-height: 1; cursor: pointer;
+  background: none; border: none; padding: 2px;
+  color: #d4d4d4;                    /* default grey */
+  transition: transform .1s, color .1s;
+}
+.rv-star.filled { color: #e23744; }  /* ✅ RED — Swiggy jaisa red */
+.rv-star:hover { transform: scale(1.2); }
+.rv-rating-label { margin-left: 10px; color: #666; font-size: 14px; }
+
+.rv-text {
+  width: 100%; border: 1px solid #ddd; border-radius: 8px;
+  padding: 10px; font-size: 14px; resize: vertical; box-sizing: border-box;
+}
+.rv-text:focus { outline: none; border-color: #e23744; }
+
+.rv-error { color: #e23744; font-size: 13px; margin: 8px 0 0; }
+
+.rv-actions { display: flex; gap: 10px; margin-top: 16px; justify-content: flex-end; }
+.rv-cancel {
+  background: #f1f1f1; border: none; padding: 9px 16px;
+  border-radius: 8px; cursor: pointer;
+}
+.rv-submit {
+  background: #e23744; color: #fff; border: none;
+  padding: 9px 18px; border-radius: 8px; cursor: pointer; font-weight: 600;
+}
+.rv-submit:disabled { opacity: .6; cursor: not-allowed; }
+
+
+/* ⭐ RED STARS */
+.rv-stars { display: flex; align-items: center; gap: 4px; margin-bottom: 14px; }
+.rv-star {
+  font-size: 34px; line-height: 1; cursor: pointer;
+  background: none; border: none; padding: 2px;
+  color: #d4d4d4;
+  transition: transform .1s, color .1s;
+}
+.rv-star.filled { color: #e23744; }   /* ✅ RED */
+.rv-star:hover { transform: scale(1.2); }
+.rv-rating-label { margin-left: 10px; color: #666; font-size: 14px; }
+
+/* ✅ Items chips */
+.rv-items { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.rv-item-chip {
+  background: #fff3f3; color: #e23744;
+  border: 1px solid #f5c2c7;
+  padding: 4px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 600;
+}
+
+/* baaki sab pehle wala hi */
+.rv-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.rv-modal { background: #fff; border-radius: 14px; padding: 24px; width: min(420px, 92vw); }
+.rv-modal h3 { margin: 0 0 16px; }
+.rv-text { width: 100%; border: 1px solid #ddd; border-radius: 8px; padding: 10px; font-size: 14px; resize: vertical; box-sizing: border-box; }
+.rv-text:focus { outline: none; border-color: #e23744; }
+.rv-error { color: #e23744; font-size: 13px; margin: 8px 0 0; }
+.rv-actions { display: flex; gap: 10px; margin-top: 16px; justify-content: flex-end; }
+.rv-cancel { background: #f1f1f1; border: none; padding: 9px 16px; border-radius: 8px; cursor: pointer; }
+.rv-submit { background: #e23744; color: #fff; border: none; padding: 9px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+.rv-submit:disabled { opacity: .6; cursor: not-allowed; }
+
+
