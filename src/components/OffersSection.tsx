@@ -2,7 +2,9 @@
 import  { useEffect, useRef, useState } from "react";
 import "../css/OffersSection.css";
 
-const API_URL = "http://localhost:3000/api/offers/active";
+// const API_URL = "http://localhost:3000/api/offers/active";
+
+const API_URL = "hungrykart-frontend-alpha.vercel.app/api/offers/active";
 
 type ApiOffer = {
   _id: string;
